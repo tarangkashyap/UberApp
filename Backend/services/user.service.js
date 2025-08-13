@@ -7,14 +7,14 @@ module.exports.createUser = async({
     if(!firstname || !email || !password){
         throw new Error("Please provide all required fields");
     }
-    const user = userModel.create({
-        fullname:{
+    const hashedPassword = await userModel.hashPassword(password);
+    const user = await userModel.create({
+        fullname: {
             firstname,
             lastname
         },
         email,
-        password
-    })
-
+        password: hashedPassword
+    });
     return user;
 }
