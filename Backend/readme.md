@@ -2,6 +2,113 @@
 
 ## Endpoint
 
+# Captain Registration Endpoint Documentation
+
+## Endpoint
+
+`POST /captains/register`
+
+## Description
+
+This endpoint allows a new captain to register by providing their full name, email, password, and vehicle details. Upon successful registration, the captain object is returned.
+
+## Request Body
+
+The request body must be in JSON format and include the following fields:
+
+```json
+{
+  "fullname": {
+    "firstname": "string (required)",
+    "lastname": "string (optional)"
+  },
+  "email": "string (valid email, required)",
+  "password": "string (min 6 chars, required)",
+  "vehicle": {
+    "color": "string (required)",
+    "plate": "string (required)",
+    "capacity": "number (required)",
+    "vehicleType": "string (car, bike, auto; required)"
+  }
+}
+```
+
+### Example
+
+```json
+{
+  "fullname": {
+    "firstname": "Alice",
+    "lastname": "Smith"
+  },
+  "email": "alice.smith@example.com",
+  "password": "mySecret123",
+  "vehicle": {
+    "color": "Red",
+    "plate": "XYZ1234",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+}
+```
+
+## Responses
+
+### Success
+
+- **Status:** `201 Created`
+- **Body:**
+  ```json
+  {
+    "message": "Captain registered successfully",
+    "captain": {
+      "_id": "captain_id_here",
+      "fullname": {
+        "firstname": "Alice",
+        "lastname": "Smith"
+      },
+      "email": "alice.smith@example.com",
+      "vehicle": {
+        "color": "Red",
+        "plate": "XYZ1234",
+        "capacity": 4,
+        "vehicleType": "car"
+      }
+    }
+  }
+  ```
+
+### Validation Error
+
+- **Status Code:** `400 Bad Request`
+- **Body:**
+  ```json
+  {
+    "errors": [
+      {
+        "msg": "Error message here",
+        "param": "field_name",
+        "location": "body"
+      }
+    ]
+  }
+  ```
+
+### Missing Fields/Error
+
+- **Status Code:** `400 Bad Request`
+- **Body:**
+  ```json
+  {
+    "errors": [
+      {
+        "msg": "Please provide all required fields"
+      }
+    ]
+  }
+  ```
+
+---
 `POST /users/register`
 
 ## Description
