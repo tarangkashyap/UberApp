@@ -52,8 +52,6 @@ The request body must be in JSON format and include the following fields:
 }
 ```
 
-## Responses
-
 ### Success
 
 - **Status:** `201 Created`
@@ -76,8 +74,6 @@ The request body must be in JSON format and include the following fields:
       }
     }
   }
-  ```
-
 ### Validation Error
 
 - **Status Code:** `400 Bad Request`
@@ -92,8 +88,6 @@ The request body must be in JSON format and include the following fields:
       }
     ]
   }
-  ```
-
 ### Missing Fields/Error
 
 - **Status Code:** `400 Bad Request`

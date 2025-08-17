@@ -2,6 +2,7 @@ const captainController = require('../controllers/captain.controller');
 const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
+const authMiddleware = require('../middlewares/auth.middleware');
 
 router.post('/register', [
     body('fullname.firstname').isLength().withMessage("First name is required"),
@@ -14,19 +15,13 @@ router.post('/register', [
 ],
   captainController.registerCaptain
 )
-// ], async (req, res) => {
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//         return res.status(400).json({ errors: errors.array() });
-//     }
 
-//     try {
-//         const captain = new captainModel(req.body);
-//         await captain.save();
-//         res.status(201).json({ message: "Captain registered successfully" });
-//     } catch (error) {
-//         res.status(500).json({ error: error.message });
-//     }
-// });
+router.post('/login', [
+    body('email').isEmail().withMessage("Invalid email address"),
+    body('password').isLength({ min: 6 }).withMessage("Password must be at least 6 characters long")
+], captainController.loginCaptain);
+
+router.get('/profile',authMiddleware.authCaptain,captainController.getCaptainProfile)
+router.get('/logout',authMiddleware.authCaptain,captainController.logoutCaptain)
 
 module.exports = router;
