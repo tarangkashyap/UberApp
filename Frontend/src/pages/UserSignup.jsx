@@ -1,29 +1,48 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { UserDataContext } from '../context/userContext';
 
 const UserSignup = () => {
-const [email, setEmail] = useState('');
+  const { user, setUser } = useContext(UserDataContext); 
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
-  const [userData, setUserData] = useState({});
-
-  const submitHandler = (e) => {
+  const navigate = useNavigate();
+  
+  const submitHandler = async (e) => { 
     e.preventDefault();
-    setUserData({ 
-      fullName:{
-      firstName:firstName,
-      lastName:lastName
-      }, 
-      email:email,
-      password:password,
-      });
+    const newUser = {
+      fullname: {
+        firstname: firstname,
+        lastname: lastname,
+      },
+      email: email,
+      password: password,
+    };
+
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/users/register`,
+        newUser
+      );
+      if (response.status === 201) {
+        const data = response.data;
+        setUser(data.user);
+        localStorage.setItem('token', data.token);
+        navigate('/home');
+      }
+    } catch (error) {
+      console.error(error); // add error handling
+    }
+
     setEmail('');
     setPassword('');
     setFirstname('');
     setLastname('');
-    // Handle login logic here
   };
+
   return (
   <div className='p-7 flex h-screen flex-col justify-between'>     
       <div>
@@ -74,7 +93,7 @@ const [email, setEmail] = useState('');
 
             <button 
              className='bg-[#111]  text-white font-semibold mb-3 rounded px-4 py-2 w-full text-base placeholder:text-sm'
-            >Login</button>
+            >Create account</button>
         </form>
            <p className='font-semibold text-center mb-2'>Already have an account? <Link to="/login" className='text-blue-600'>Login</Link></p>
 
