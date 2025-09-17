@@ -1,48 +1,52 @@
-import React, { useContext, useEffect, useState} from 'react'
-import { useNavigate } from 'react-router-dom';
-import  { CaptainDataContext } from '../context/CaptainContext'
-import axios from 'axios';
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { CaptainDataContext } from "../context/CaptainContext";
+import axios from "axios";
 
-const CaptainProtectWrapper = ({children}) => {
-    const token = localStorage.getItem('token');
-    const { captain, setCaptain } = useContext(CaptainDataContext);
-    const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(true);
+const CaptainProtectWrapper = ({ children }) => {
+  const token = localStorage.getItem("token");
+  const { setCaptain } = useContext(CaptainDataContext);
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() =>{
-        if (!token) {
-        navigate('/captainLogin');
+  useEffect(() => {
+    // if no token → send to login
+    if (!token) {
+      navigate("/captainLogin");
+      return;
     }
-    }, [ token ])
 
-    axios.get(`${import.meta.env.VITE_BASE_URL}/captains/profile`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }).then((response) => {
+    const fetchProfile = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BASE_URL}/captains/profile`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
         if (response.status === 200) {
           setCaptain(response.data.captain);
-          setIsLoading(false);
         }
-      })
-        .catch((error) => {
-            console.error('Error fetching captain profile:', error);
-            setIsLoading(false);
-            localStorage.removeItem('token');
-            navigate('/captainLogin');
-        });
-    
-    if(isLoading) {
-        return (
-            <div>Loading...</div>
-        )
-    }
+      } catch (error) {
+        console.error("Error fetching captain profile:", error);
+        localStorage.removeItem("token");
+        navigate("/captainLogin");
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
+    fetchProfile();
+  }, [token, navigate, setCaptain]);
 
- 
-  return (
-    <div>{children}</div>
-  )
-}
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-export default CaptainProtectWrapper
+  return <div>{children}</div>;
+};
+
+export default CaptainProtectWrapper;
