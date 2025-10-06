@@ -1,6 +1,6 @@
 import React from 'react';
 
-const VehiclePanel = ({ setVehiclePanel, selectedRide, setConfirmRidePanel, setSelectedRide }) => {
+const VehiclePanel = ({ setVehiclePanel, selectedRide, setConfirmRidePanel, setSelectedRide, fare }) => {
   return (
     <div>
       <h5
@@ -35,7 +35,7 @@ const VehiclePanel = ({ setVehiclePanel, selectedRide, setConfirmRidePanel, setS
           <h5 className="font-medium text-sm">2 mins away</h5>
           <p className="font-normal text-sm text-gray-600">Affordable, compact rides</p>
         </div>
-        <h2 className="text-lg font-semibold">₹192.38</h2>
+        <h2 className="text-lg font-semibold">₹ {fare.car}</h2>
       </div>
 
       {/* Bike */}
@@ -59,7 +59,7 @@ const VehiclePanel = ({ setVehiclePanel, selectedRide, setConfirmRidePanel, setS
           <h5 className="font-medium text-sm">4 mins away</h5>
           <p className="font-normal text-xs text-gray-600">Affordable motorcycle rides</p>
         </div>
-        <h2 className="text-lg font-semibold">₹65.38</h2>
+        <h2 className="text-lg font-semibold">₹ {fare.bike}</h2>
       </div>
 
       {/* Auto */}
@@ -83,7 +83,7 @@ const VehiclePanel = ({ setVehiclePanel, selectedRide, setConfirmRidePanel, setS
           <h5 className="font-medium text-sm">8 mins away</h5>
           <p className="font-normal text-sm text-gray-600">Affordable Auto rides</p>
         </div>
-        <h2 className="text-lg font-semibold">₹99.38</h2>
+        <h2 className="text-lg font-semibold">₹ {fare.auto}</h2>
       </div>
     </div>
   );

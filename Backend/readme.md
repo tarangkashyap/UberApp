@@ -12,6 +12,87 @@
 
 This endpoint allows a new captain to register by providing their full name, email, password, and vehicle details. Upon successful registration, the captain object is returned.
 
+---
+
+## Ride Fare Calculation Endpoint Documentation
+
+### Endpoint
+
+`GET /rides/get-fare`
+
+### Description
+
+This endpoint calculates and returns the estimated fare for a ride based on the pickup and destination locations. The request must include a valid JWT token.
+
+### Request
+
+- **Headers:**  
+  `Authorization: Bear <jwt_token_here>`
+- **Query Parameters:**
+  - `pickup`: string (required) — Pickup location address
+  - `destination`: string (required) — Destination location address
+
+#### Example
+
+```
+GET /rides/get-fare?pickup=Kankariya%20Talab,%20Ahmedabad&destination=Paldi,%20Ahmedabad
+```
+
+### Responses
+
+#### Success
+
+- **Status:** `200 OK`
+- **Body:**
+  ```json
+  {
+    "fare": {
+      "auto": 99,
+      "car": 192,
+      "bike": 65
+    }
+  }
+  ```
+
+#### Validation Error
+
+- **Status Code:** `400 Bad Request`
+- **Body:**
+  ```json
+  {
+    "errors": [
+      {
+        "msg": "Pickup location is required",
+        "param": "pickup",
+        "location": "query"
+      }
+    ]
+  }
+  ```
+
+#### Unauthorized
+
+- **Status Code:** `401 Unauthorized`
+- **Body:**
+  ```json
+  {
+    "message": "Authentication required"
+  }
+  ```
+# User Registration Endpoint Documentation
+
+## Endpoint
+
+# Captain Registration Endpoint Documentation
+
+## Endpoint
+
+`POST /captains/register`
+
+## Description
+
+This endpoint allows a new captain to register by providing their full name, email, password, and vehicle details. Upon successful registration, the captain object is returned.
+
 ## Request Body
 
 The request body must be in JSON format and include the following fields:
