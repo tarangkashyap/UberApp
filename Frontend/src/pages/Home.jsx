@@ -203,7 +203,8 @@ const Home = () => {
         ref={vehiclePanelRef}
         className="fixed w-full z-40 bottom-0 translate-y-full bg-white py-10 px-3 shadow-xl pt-12"
       >
-        <VehiclePanel
+        <VehiclePanel 
+        
           setVehiclePanel={setVehiclePanel}
           selectedRide={selectedRide}
           fare={fare}
